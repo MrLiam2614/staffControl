@@ -1,0 +1,5 @@
+main: me.mrliam2614.StaffControl
+name: StaffControl
+author: MrLiam2614
+version: 0.0.1
+depend: [FacilitisAPI]

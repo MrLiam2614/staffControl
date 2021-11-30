@@ -1,0 +1,7 @@
+structure:
+  central: SEA_LANTERN
+  central2: COAL_BLOCK
+  player: REDSTONE_BLOCK
+  staff: GOLD_BLOCK
+  borders: IRON_BLOCK
+  cage: IRON_BARS
