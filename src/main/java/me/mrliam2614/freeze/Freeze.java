@@ -10,16 +10,14 @@ public class Freeze {
     private final Location playerLocation;
     private final Location staffLocation;
 
-    private final float playerSpeed;
     private final boolean isFlying;
     private final boolean canPickUp;
 
-    public Freeze(UUID staffUUID, UUID playerUUID, Location playerLocation, Location staffLocation, float playerSpeed, boolean isFlying, boolean canPickUp) {
+    public Freeze(UUID staffUUID, UUID playerUUID, Location playerLocation, Location staffLocation, boolean isFlying, boolean canPickUp) {
         this.staffUUID = staffUUID;
         this.playerUUID = playerUUID;
         this.playerLocation = playerLocation;
         this.staffLocation = staffLocation;
-        this.playerSpeed = playerSpeed;
         this.isFlying = isFlying;
         this.canPickUp = canPickUp;
     }
@@ -39,10 +37,6 @@ public class Freeze {
 
     public Location getStaffLocation() {
         return staffLocation;
-    }
-
-    public float getPlayerSpeed() {
-        return playerSpeed;
     }
 
     public boolean isFlying() {

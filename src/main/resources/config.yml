@@ -4,4 +4,4 @@ structure:
   player: REDSTONE_BLOCK
   staff: GOLD_BLOCK
   borders: IRON_BLOCK
-  cage: IRON_BARS
+  cage: IRON_FENCE

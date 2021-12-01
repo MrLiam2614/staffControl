@@ -11,17 +11,17 @@ public class RunCommand implements Listener {
     @EventHandler
     public void onCommandRun(PlayerCommandPreprocessEvent event){
         Player player = event.getPlayer();
-        if(!(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFreezed(player.getUniqueId()))){
+        if(!(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId()))){
             return;
         }
         if(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId())){
-            if(!event.getMessage().equalsIgnoreCase("unfreeze")) {
-                StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't teleport while you are freezing!");
+            if(!event.getMessage().contains("unfreeze")) {
+                StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't run commands while you are freezing!");
                 event.setCancelled(true);
             }
         }
-        if(StaffControl.getInterface().getFreezeHandler().isFreezed(player.getUniqueId())){
-            StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't teleport while you are freezed!");
+        if(StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId())){
+            StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't run commands while you are freezed!");
             event.setCancelled(true);
         }
     }

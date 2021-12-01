@@ -1,8 +1,8 @@
 package me.mrliam2614.commands;
 
+import me.mrliam2614.FacilitisAPI;
 import me.mrliam2614.StaffControl;
 import me.mrliam2614.freeze.Freeze;
-import me.mrliam2614.structure.Structure;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,7 +42,7 @@ public class CmdFreeze implements CommandExecutor {
             return true;
         }
 
-        if (plugin.getFreezeHandler().isFreezed(frozenPlayer.getUniqueId())) {
+        if (plugin.getFreezeHandler().isFrozen(frozenPlayer.getUniqueId())) {
             plugin.getFacilitisAPI().msg.sendMessage((Player) sender, "&cThis player is already frozen");
             return true;
         }
@@ -55,21 +55,15 @@ public class CmdFreeze implements CommandExecutor {
         return true;
     }
 
-    public void freezePlayer(Player freezingPlayer, Player frozenPlayer) {
+    private void freezePlayer(Player freezingPlayer, Player frozenPlayer) {
+        FacilitisAPI facilitisAPI = plugin.getFacilitisAPI();
         Freeze freeze = new Freeze(freezingPlayer.getUniqueId(), frozenPlayer.getUniqueId(), frozenPlayer.getLocation(),
-                freezingPlayer.getLocation(), frozenPlayer.getWalkSpeed(), frozenPlayer.isFlying(),
-                frozenPlayer.getCanPickupItems());
-        plugin.getFreezeHandler().addFreeze(freeze);
-        plugin.getFacilitisAPI().msg.sendMessage(freezingPlayer, "&aYou have frozen " + frozenPlayer.getName());
-        plugin.getFacilitisAPI().msg.sendMessage(frozenPlayer, "&cYou have been frozen by " + frozenPlayer.getName());
-        frozenPlayer.setWalkSpeed(0f);
-        frozenPlayer.setFlying(false);
-        frozenPlayer.setCanPickupItems(false);
-
-        Structure structure = new Structure(freezingPlayer.getUniqueId(), freezingPlayer.getLocation());
-        plugin.structureHandler().addStructure(structure);
-        plugin.structureHandler().createStructure(structure);
-        freezingPlayer.teleport(structure.getStaffLoc());
-        frozenPlayer.teleport(structure.getPlayerLoc());
+                freezingPlayer.getLocation(), frozenPlayer.isFlying(), frozenPlayer.getCanPickupItems());
+        if (plugin.getFreezeHandler().addFreeze(freeze)) {
+            facilitisAPI.msg.sendMessage(freezingPlayer, "&aYou have frozen " + frozenPlayer.getName());
+            facilitisAPI.msg.sendMessage(frozenPlayer, "&cYou have been frozen by " + frozenPlayer.getName());
+            frozenPlayer.setFlying(false);
+            frozenPlayer.setCanPickupItems(false);
+        }
     }
 }

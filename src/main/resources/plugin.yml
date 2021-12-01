@@ -3,3 +3,8 @@ name: StaffControl
 author: MrLiam2614
 version: 0.0.1
 depend: [FacilitisAPI]
+commands:
+  freeze:
+    description: Freeze Player
+  unfreeze:
+    description: Un-Freeze Player

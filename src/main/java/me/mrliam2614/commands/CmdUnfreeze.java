@@ -2,7 +2,6 @@ package me.mrliam2614.commands;
 
 import me.mrliam2614.StaffControl;
 import me.mrliam2614.freeze.Freeze;
-import me.mrliam2614.structure.Structure;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,7 +35,7 @@ public class CmdUnfreeze implements CommandExecutor {
         Player frozenPlayer = Bukkit.getPlayer(args[0]);
         Player freezingPlayer = (Player) sender;
 
-        if (!plugin.getFreezeHandler().isFreezed(frozenPlayer.getUniqueId())) {
+        if (!plugin.getFreezeHandler().isFrozen(frozenPlayer.getUniqueId())) {
             plugin.getFacilitisAPI().msg.sendMessage((Player) sender, "&cThis player is not frozen");
             return true;
         }
@@ -51,7 +50,6 @@ public class CmdUnfreeze implements CommandExecutor {
 
     public void unfreezePlayer(Player freezingPlayer, Player frozenPlayer) {
         Freeze freeze = plugin.getFreezeHandler().getFrozen(frozenPlayer.getUniqueId());
-        frozenPlayer.setWalkSpeed(freeze.getPlayerSpeed());
         frozenPlayer.setFlying(freeze.isFlying());
         frozenPlayer.setCanPickupItems(freeze.isCanPickUp());
         plugin.getFacilitisAPI().msg.sendMessage(freezingPlayer, "&aYou have un-frozen " + frozenPlayer.getName());
@@ -59,9 +57,5 @@ public class CmdUnfreeze implements CommandExecutor {
         frozenPlayer.teleport(freeze.getPlayerLocation());
         freezingPlayer.teleport(freeze.getStaffLocation());
         plugin.getFreezeHandler().removeFreeze(freeze);
-
-        Structure structure = plugin.structureHandler().getStructure(freezingPlayer.getUniqueId());
-        plugin.structureHandler().destroyStructure(structure);
-        plugin.structureHandler().removeStructure(structure);
     }
 }

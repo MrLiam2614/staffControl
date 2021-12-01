@@ -2,10 +2,7 @@ package me.mrliam2614;
 
 import me.mrliam2614.commands.CmdFreeze;
 import me.mrliam2614.commands.CmdUnfreeze;
-import me.mrliam2614.events.ChatDivision;
-import me.mrliam2614.events.PlayerDamage;
-import me.mrliam2614.events.RunCommand;
-import me.mrliam2614.events.TeleportEvent;
+import me.mrliam2614.events.*;
 import me.mrliam2614.freeze.FreezeHandler;
 import me.mrliam2614.structure.StructureHandler;
 import org.bukkit.Bukkit;
@@ -18,7 +15,6 @@ public class StaffControl extends JavaPlugin {
     private static StaffControl staffControl;
     private FacilitisAPI facilitisAPI;
     private FreezeHandler freezeHandler;
-    private StructureHandler structureHandler;
 
     @Override
     public void onEnable() {
@@ -26,8 +22,10 @@ public class StaffControl extends JavaPlugin {
         facilitisAPI = FacilitisAPI.getInstance();
         facilitisAPI.messages.EnableMessage(this);
 
+        saveDefaultConfig();
+        saveConfig();
+
         freezeHandler = new FreezeHandler();
-        structureHandler = new StructureHandler();
         registerListener();
         registerCommands();
         checkMaterials();
@@ -58,6 +56,7 @@ public class StaffControl extends JavaPlugin {
         pm.registerEvents(new PlayerDamage(), this);
         pm.registerEvents(new RunCommand(), this);
         pm.registerEvents(new TeleportEvent(), this);
+        pm.registerEvents(new PlayerMove(), this);
     }
 
     @Override
@@ -71,10 +70,6 @@ public class StaffControl extends JavaPlugin {
 
     public FreezeHandler getFreezeHandler() {
         return freezeHandler;
-    }
-
-    public StructureHandler structureHandler() {
-        return structureHandler;
     }
 
     public static StaffControl getInterface() {

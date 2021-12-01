@@ -16,7 +16,7 @@ public class PlayerDamage implements Listener {
             return;
         }
         Player player = (Player) entity;
-        if(!(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFreezed(player.getUniqueId()))){
+        if(!(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId()))){
             return;
         }
         event.setCancelled(true);
