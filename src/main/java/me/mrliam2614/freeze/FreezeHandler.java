@@ -119,6 +119,10 @@ public class FreezeHandler {
         return null;
     }
 
+    public List<Freeze> getFreezeList(){
+        return freezeList;
+    }
+
     public Structure getStructure(UUID staffID) {
         return structureHandler.getStructure(staffID);
     }

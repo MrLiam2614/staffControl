@@ -15,7 +15,7 @@ public class RunCommand implements Listener {
             return;
         }
         if(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId())){
-            if(!event.getMessage().contains("unfreeze")) {
+            if(!event.getMessage().contains("unfreeze") && !event.getMessage().contains("freeze")) {
                 StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't run commands while you are freezing!");
                 event.setCancelled(true);
             }

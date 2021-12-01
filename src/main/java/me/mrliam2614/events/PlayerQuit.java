@@ -26,6 +26,7 @@ public class PlayerQuit implements Listener {
             if (staffPlayer.isOnline())
                 staffPlayer.sendMessage("&4User " + userPlayer.getName() + " left control");
 
+
             if (userPlayer.isOnline()) {
                 userPlayer.sendMessage("&4Your controller " + staffPlayer.getName() + " left control");
                 for(Player p : Bukkit.getServer().getOnlinePlayers()){

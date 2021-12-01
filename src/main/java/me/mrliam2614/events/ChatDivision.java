@@ -1,6 +1,7 @@
 package me.mrliam2614.events;
 
 import me.mrliam2614.StaffControl;
+import me.mrliam2614.freeze.Freeze;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,11 @@ public class ChatDivision implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Player sender = event.getPlayer();
-        if(!(StaffControl.getInterface().getFreezeHandler().isFreezing(sender.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFrozen(sender.getUniqueId()))){
+        for (Freeze freeze : StaffControl.getInterface().getFreezeHandler().getFreezeList()) {
+            event.getRecipients().remove(Bukkit.getPlayer(freeze.getPlayerUUID()));
+            event.getRecipients().remove(Bukkit.getPlayer(freeze.getStaffUUID()));
+        }
+        if ((StaffControl.getInterface().getFreezeHandler().getFreeze(sender.getUniqueId()) == null)) {
             return;
         }
         //Is Sender Staff
