@@ -12,21 +12,21 @@ public class TeleportEvent implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
-        if(!(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId()))){
+        if (!EventManager.isPlayerFreezeAction(player)) {
             return;
         }
         FreezeHandler freezeHandler = StaffControl.getInterface().getFreezeHandler();
-        if(event.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)){
-            if(event.getTo().distance(freezeHandler.getStructure(freezeHandler.getFreeze(player.getUniqueId()).getStaffUUID()).getLocation()) < 10){
+        if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)) {
+            if (event.getTo().distance(freezeHandler.getStructure(freezeHandler.getFreeze(player.getUniqueId()).getStaffUUID()).getLocation()) < 10) {
                 return;
             }
         }
-        if (freezeHandler.isFrozen(player.getUniqueId())) {
-            StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't teleport while you are feezed!");
+        if (EventManager.isPlayer(player)) {
+            StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't teleport while you are frozen!");
             event.setCancelled(true);
             return;
         }
-        if (freezeHandler.isFreezing(player.getUniqueId())) {
+        if (EventManager.isStaff(player)) {
             StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't teleport while you are freezing!");
             event.setCancelled(true);
             return;

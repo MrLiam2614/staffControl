@@ -61,7 +61,7 @@ public class CmdFreeze implements CommandExecutor {
                 freezingPlayer.getLocation(), frozenPlayer.isFlying(), frozenPlayer.getCanPickupItems());
         if (plugin.getFreezeHandler().addFreeze(freeze)) {
             facilitisAPI.msg.sendMessage(freezingPlayer, "&aYou have frozen " + frozenPlayer.getName());
-            facilitisAPI.msg.sendMessage(frozenPlayer, "&cYou have been frozen by " + frozenPlayer.getName());
+            facilitisAPI.msg.sendMessage(frozenPlayer, "&cYou have been frozen by " + freezingPlayer.getName());
             frozenPlayer.setFlying(false);
             frozenPlayer.setCanPickupItems(false);
         }

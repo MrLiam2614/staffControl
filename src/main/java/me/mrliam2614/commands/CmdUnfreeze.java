@@ -1,7 +1,6 @@
 package me.mrliam2614.commands;
 
 import me.mrliam2614.StaffControl;
-import me.mrliam2614.freeze.Freeze;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,18 +43,7 @@ public class CmdUnfreeze implements CommandExecutor {
             return true;
         }
 
-        unfreezePlayer(freezingPlayer, frozenPlayer);
+        plugin.getFreezeHandler().unfreezePlayer(freezingPlayer, frozenPlayer);
         return true;
-    }
-
-    public void unfreezePlayer(Player freezingPlayer, Player frozenPlayer) {
-        Freeze freeze = plugin.getFreezeHandler().getFrozen(frozenPlayer.getUniqueId());
-        frozenPlayer.setFlying(freeze.isFlying());
-        frozenPlayer.setCanPickupItems(freeze.isCanPickUp());
-        plugin.getFacilitisAPI().msg.sendMessage(freezingPlayer, "&aYou have un-frozen " + frozenPlayer.getName());
-        plugin.getFacilitisAPI().msg.sendMessage(frozenPlayer, "&cYou have been un-frozen by " + frozenPlayer.getName());
-        frozenPlayer.teleport(freeze.getPlayerLocation());
-        freezingPlayer.teleport(freeze.getStaffLocation());
-        plugin.getFreezeHandler().removeFreeze(freeze);
     }
 }

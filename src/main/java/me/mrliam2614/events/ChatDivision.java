@@ -8,6 +8,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChatDivision implements Listener {
 
     @EventHandler
@@ -20,17 +23,19 @@ public class ChatDivision implements Listener {
         if ((StaffControl.getInterface().getFreezeHandler().getFreeze(sender.getUniqueId()) == null)) {
             return;
         }
-        //Is Sender Staff
-        if (StaffControl.getInterface().getFreezeHandler().isFreezing(sender.getUniqueId())) {
+
+        //Is Sender is in FreezeMode
+        if (EventManager.isPlayerFreezeAction(sender)) {
             event.getRecipients().clear();
-            event.getRecipients().add(sender);
-            event.getRecipients().add(Bukkit.getPlayer(StaffControl.getInterface().getFreezeHandler().getPlayer(sender.getUniqueId())));
+            event.getRecipients().addAll(addRecipients(sender));
         }
-        //Is Sender Player
-        if (StaffControl.getInterface().getFreezeHandler().isFrozen(sender.getUniqueId())) {
-            event.getRecipients().clear();
-            event.getRecipients().add(sender);
-            event.getRecipients().add(Bukkit.getPlayer(StaffControl.getInterface().getFreezeHandler().getStaff(sender.getUniqueId())));
-        }
+    }
+
+    public List<Player> addRecipients(Player player){
+        List<Player> list = new ArrayList<>();
+        list.add(Bukkit.getPlayer(StaffControl.getInterface().getFreezeHandler().getFreeze(player.getUniqueId()).getPlayerUUID()));
+        list.add(Bukkit.getPlayer(StaffControl.getInterface().getFreezeHandler().getFreeze(player.getUniqueId()).getStaffUUID()));
+
+        return list;
     }
 }

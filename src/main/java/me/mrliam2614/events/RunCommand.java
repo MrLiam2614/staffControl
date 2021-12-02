@@ -9,19 +9,19 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class RunCommand implements Listener {
 
     @EventHandler
-    public void onCommandRun(PlayerCommandPreprocessEvent event){
+    public void onCommandRun(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        if(!(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId()))){
+        if (!(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId()))) {
             return;
         }
-        if(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId())){
-            if(!event.getMessage().contains("unfreeze") && !event.getMessage().contains("freeze")) {
+        if (EventManager.isStaff(player)) {
+            if (!event.getMessage().contains("unfreeze") && !event.getMessage().contains("freeze")) {
                 StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't run commands while you are freezing!");
                 event.setCancelled(true);
             }
         }
-        if(StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId())){
-            StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't run commands while you are freezed!");
+        if (EventManager.isPlayer(player)) {
+            StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't run commands while you are frozen!");
             event.setCancelled(true);
         }
     }

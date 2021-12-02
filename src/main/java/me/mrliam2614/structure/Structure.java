@@ -21,11 +21,18 @@ public class Structure {
         return location;
     }
 
-    public Location getPlayerLoc(){
-        return location.clone().add(0.0,1.0,-3.0);
+    public Location getPlayerLoc() {
+        Location loc = location.clone().add(0.0, 1.1, -3.0);
+        loc.setYaw(0);
+        loc.setPitch(0);
+
+        return loc;
     }
 
-    public Location getStaffLoc(){
-        return location.clone().add(0.0,1.0,3.0);
+    public Location getStaffLoc() {
+        Location loc = location.clone().add(0.0, 1.1, 3.0);
+        loc.setYaw(180);
+        loc.setPitch(0);
+        return loc;
     }
 }

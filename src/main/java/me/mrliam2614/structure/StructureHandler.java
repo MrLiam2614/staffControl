@@ -28,7 +28,7 @@ public class StructureHandler {
     }
 
     public boolean removeStructure(Structure structure) {
-        if (!(getStructure(structure.getCreator()) == null)) {
+        if ((getStructure(structure.getCreator()) == null)) {
             return false;
         }
         destroyStructure(structure);

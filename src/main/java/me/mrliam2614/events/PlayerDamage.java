@@ -1,6 +1,5 @@
 package me.mrliam2614.events;
 
-import me.mrliam2614.StaffControl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,9 +15,8 @@ public class PlayerDamage implements Listener {
             return;
         }
         Player player = (Player) entity;
-        if(!(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId()))){
-            return;
+        if(EventManager.isPlayerFreezeAction(player)){
+            event.setCancelled(true);
         }
-        event.setCancelled(true);
     }
 }

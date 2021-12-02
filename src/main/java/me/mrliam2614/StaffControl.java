@@ -57,6 +57,8 @@ public class StaffControl extends JavaPlugin {
         pm.registerEvents(new RunCommand(), this);
         pm.registerEvents(new TeleportEvent(), this);
         pm.registerEvents(new PlayerMove(), this);
+        pm.registerEvents(new PlayerQuit(), this);
+        pm.registerEvents(new PlayerInteract(), this);
     }
 
     @Override

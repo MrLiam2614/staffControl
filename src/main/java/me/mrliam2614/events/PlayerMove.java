@@ -7,20 +7,25 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.UUID;
+
 public class PlayerMove implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (!(StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId()) || StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId()))) {
+        if (!EventManager.isPlayerFreezeAction(player)) {
             return;
         }
         FreezeHandler freezeHandler = StaffControl.getInterface().getFreezeHandler();
-        if (freezeHandler.isFrozen(player.getUniqueId())) {
-            player.teleport(event.getFrom());
+        if (EventManager.isPlayer(player)) {
+            UUID staffUUID = freezeHandler.getStaff(player.getUniqueId());
+            if (player.getLocation().distance(freezeHandler.getStructure(staffUUID).getPlayerLoc()) > 1.5) {
+                player.teleport(freezeHandler.getStructure(staffUUID).getPlayerLoc());
+            }
         }
-        if (freezeHandler.isFreezing(player.getUniqueId())) {
+        if (EventManager.isStaff(player)) {
             if (player.getLocation().distance(freezeHandler.getStructure(player.getUniqueId()).getLocation()) > 5) {
-                player.teleport(event.getFrom());
+                player.teleport(freezeHandler.getStructure(player.getUniqueId()).getStaffLoc());
             }
         }
     }

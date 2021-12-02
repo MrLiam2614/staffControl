@@ -1,12 +1,12 @@
 package me.mrliam2614.freeze;
 
+import me.mrliam2614.StaffControl;
 import me.mrliam2614.structure.Structure;
 import me.mrliam2614.structure.StructureHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class FreezeHandler {
             strLoc.setY(baseHeight);
 
             Structure structure = new Structure(freeze.getStaffUUID(), strLoc);
-            if(!structureHandler.addStructure(structure)){
+            if (!structureHandler.addStructure(structure)) {
                 freezeList.remove(freeze);
                 return false;
             }
@@ -46,15 +46,11 @@ public class FreezeHandler {
         Player player = Bukkit.getPlayer(freeze.getPlayerUUID());
 
         staff.teleport(structure.getStaffLoc());
-        staff.getLocation().setYaw(0);
-        player.getLocation().setPitch(0);
         player.teleport(structure.getPlayerLoc());
-        player.getLocation().setYaw(180);
-        player.getLocation().setPitch(0);
     }
 
     public boolean removeFreeze(Freeze freeze) {
-        if (getFrozen(freeze.getStaffUUID()) != null) {
+        if (freeze.getStaffUUID() != null) {
             Structure structure = structureHandler.getStructure(freeze.getStaffUUID());
             structureHandler.removeStructure(structure);
             freezeList.remove(freeze);
@@ -119,11 +115,39 @@ public class FreezeHandler {
         return null;
     }
 
-    public List<Freeze> getFreezeList(){
+    public List<Freeze> getFreezeList() {
         return freezeList;
     }
 
     public Structure getStructure(UUID staffID) {
         return structureHandler.getStructure(staffID);
+    }
+
+    public boolean unfreezePlayer(Freeze freeze) {
+        unfreezePlayer(Bukkit.getPlayer(freeze.getStaffUUID()), Bukkit.getPlayer(freeze.getPlayerUUID()));
+        return true;
+    }
+
+
+    public boolean unfreezePlayer(Player freezingPlayer, Player frozenPlayer) {
+        StaffControl plugin = StaffControl.getInterface();
+        Freeze freeze = plugin.getFreezeHandler().getFrozen(frozenPlayer.getUniqueId());
+        frozenPlayer.setFlying(freeze.isFlying());
+        frozenPlayer.setCanPickupItems(freeze.isCanPickUp());
+        Location playerLoc = freeze.getPlayerLocation();
+        Location staffLoc = freeze.getStaffLocation();
+
+        if (plugin.getFreezeHandler().removeFreeze(freeze)) {
+            plugin.getFacilitisAPI().msg.sendMessage(freezingPlayer, "&aYou have un-frozen " + frozenPlayer.getName());
+            plugin.getFacilitisAPI().msg.sendMessage(frozenPlayer, "&cYou have been un-frozen by " + freezingPlayer.getName());
+
+            System.out.println(freezingPlayer.getLocation());
+            System.out.println(staffLoc);
+            freezingPlayer.teleport(staffLoc);
+            System.out.println(freezingPlayer.getLocation());
+            frozenPlayer.teleport(playerLoc);
+            return true;
+        }
+        return false;
     }
 }
