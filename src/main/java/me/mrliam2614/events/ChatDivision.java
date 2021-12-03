@@ -2,6 +2,7 @@ package me.mrliam2614.events;
 
 import me.mrliam2614.StaffControl;
 import me.mrliam2614.freeze.Freeze;
+import me.mrliam2614.freeze.FreezeHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChatDivision implements Listener {
@@ -16,11 +18,11 @@ public class ChatDivision implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Player sender = event.getPlayer();
-        for (Freeze freeze : StaffControl.getInterface().getFreezeHandler().getFreezeList()) {
+        for (Freeze freeze : StaffControl.getInstance().getFreezeHandler().getFreezeList()) {
             event.getRecipients().remove(Bukkit.getPlayer(freeze.getPlayerUUID()));
             event.getRecipients().remove(Bukkit.getPlayer(freeze.getStaffUUID()));
         }
-        if ((StaffControl.getInterface().getFreezeHandler().getFreeze(sender.getUniqueId()) == null)) {
+        if ((StaffControl.getInstance().getFreezeHandler().getFreeze(sender.getUniqueId()) == null)) {
             return;
         }
 
@@ -31,11 +33,12 @@ public class ChatDivision implements Listener {
         }
     }
 
-    public List<Player> addRecipients(Player player){
-        List<Player> list = new ArrayList<>();
-        list.add(Bukkit.getPlayer(StaffControl.getInterface().getFreezeHandler().getFreeze(player.getUniqueId()).getPlayerUUID()));
-        list.add(Bukkit.getPlayer(StaffControl.getInterface().getFreezeHandler().getFreeze(player.getUniqueId()).getStaffUUID()));
+    public List<Player> addRecipients(Player target){
+        FreezeHandler freezeHandler = StaffControl.getInstance().getFreezeHandler();
 
-        return list;
+        Player staff = Bukkit.getPlayer(freezeHandler.getFreeze(target.getUniqueId()).getStaffUUID());
+        Player player = Bukkit.getPlayer(freezeHandler.getFreeze(target.getUniqueId()).getPlayerUUID());
+
+        return new ArrayList<>(Arrays.asList(player, staff));
     }
 }

@@ -17,7 +17,7 @@ public class PlayerQuit implements Listener {
         if (!EventManager.isPlayerFreezeAction(player)) {
             return;
         }
-        FreezeHandler freezeHandler = StaffControl.getInterface().getFreezeHandler();
+        FreezeHandler freezeHandler = StaffControl.getInstance().getFreezeHandler();
         if (freezeHandler.getFreeze(player.getUniqueId()) != null) {
             Freeze freeze = freezeHandler.getFreeze(player.getUniqueId());
             Player staffPlayer = Bukkit.getPlayer(freeze.getStaffUUID());

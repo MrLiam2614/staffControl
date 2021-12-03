@@ -16,7 +16,7 @@ public class PlayerMove implements Listener {
         if (!EventManager.isPlayerFreezeAction(player)) {
             return;
         }
-        FreezeHandler freezeHandler = StaffControl.getInterface().getFreezeHandler();
+        FreezeHandler freezeHandler = StaffControl.getInstance().getFreezeHandler();
         if (EventManager.isPlayer(player)) {
             UUID staffUUID = freezeHandler.getStaff(player.getUniqueId());
             if (player.getLocation().distance(freezeHandler.getStructure(staffUUID).getPlayerLoc()) > 1.5) {

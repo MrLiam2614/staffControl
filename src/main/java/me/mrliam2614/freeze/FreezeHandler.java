@@ -130,10 +130,13 @@ public class FreezeHandler {
 
 
     public boolean unfreezePlayer(Player freezingPlayer, Player frozenPlayer) {
-        StaffControl plugin = StaffControl.getInterface();
+        StaffControl plugin = StaffControl.getInstance();
+
         Freeze freeze = plugin.getFreezeHandler().getFrozen(frozenPlayer.getUniqueId());
+
         frozenPlayer.setFlying(freeze.isFlying());
         frozenPlayer.setCanPickupItems(freeze.isCanPickUp());
+
         Location playerLoc = freeze.getPlayerLocation();
         Location staffLoc = freeze.getStaffLocation();
 
@@ -141,10 +144,7 @@ public class FreezeHandler {
             plugin.getFacilitisAPI().msg.sendMessage(freezingPlayer, "&aYou have un-frozen " + frozenPlayer.getName());
             plugin.getFacilitisAPI().msg.sendMessage(frozenPlayer, "&cYou have been un-frozen by " + freezingPlayer.getName());
 
-            System.out.println(freezingPlayer.getLocation());
-            System.out.println(staffLoc);
             freezingPlayer.teleport(staffLoc);
-            System.out.println(freezingPlayer.getLocation());
             frozenPlayer.teleport(playerLoc);
             return true;
         }

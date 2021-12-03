@@ -9,27 +9,28 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CmdFreeze implements CommandExecutor {
+public class CommandFreeze implements CommandExecutor {
 
     private final StaffControl plugin;
 
-    public CmdFreeze() {
-        this.plugin = StaffControl.getInterface();
+    public CommandFreeze() {
+        this.plugin = StaffControl.getInstance();
     }
 
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        FacilitisAPI facilitisAPI = plugin.getFacilitisAPI();
         if (!sender.hasPermission("staffcontrol.control")) {
-            plugin.getFacilitisAPI().msg.sendMessage((Player) sender, "&cYou don't have permission to do this command");
+            facilitisAPI.msg.sendMessage((Player) sender, "&cYou don't have permission to do this command");
             return true;
         }
         if (!(sender instanceof Player)) {
-            plugin.getFacilitisAPI().msg.sendMessage((Player) sender, "&cYou must to be a player");
+            facilitisAPI.console.sendMessage("&cYou must be a player to do that");
             return true;
         }
         if (args.length < 1) {
-            plugin.getFacilitisAPI().msg.sendMessage((Player) sender, "&cPlease specify a player");
+            facilitisAPI.msg.sendMessage((Player) sender, "&cPlease specify a player");
             return true;
         }
 
@@ -38,16 +39,16 @@ public class CmdFreeze implements CommandExecutor {
 
 
         if (!frozenPlayer.isOnline()) {
-            plugin.getFacilitisAPI().msg.sendMessage((Player) sender, "&cThis player is not online");
+            facilitisAPI.msg.sendMessage((Player) sender, "&cThis player is not online");
             return true;
         }
 
         if (plugin.getFreezeHandler().isFrozen(frozenPlayer.getUniqueId())) {
-            plugin.getFacilitisAPI().msg.sendMessage((Player) sender, "&cThis player is already frozen");
+            facilitisAPI.msg.sendMessage((Player) sender, "&cThis player is already frozen");
             return true;
         }
         if (plugin.getFreezeHandler().isFreezing(freezingPlayer.getUniqueId())) {
-            plugin.getFacilitisAPI().msg.sendMessage((Player) sender, "&cYou are already freezing a player");
+            facilitisAPI.msg.sendMessage((Player) sender, "&cYou are already freezing a player");
             return true;
         }
 

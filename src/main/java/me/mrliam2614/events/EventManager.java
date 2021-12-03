@@ -10,10 +10,10 @@ public class EventManager {
     }
 
     public static boolean isPlayer(Player player){
-        return StaffControl.getInterface().getFreezeHandler().isFrozen(player.getUniqueId());
+        return StaffControl.getInstance().getFreezeHandler().isFrozen(player.getUniqueId());
     }
 
     public static boolean isStaff(Player player){
-        return StaffControl.getInterface().getFreezeHandler().isFreezing(player.getUniqueId());
+        return StaffControl.getInstance().getFreezeHandler().isFreezing(player.getUniqueId());
     }
 }

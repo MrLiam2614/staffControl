@@ -15,21 +15,20 @@ public class TeleportEvent implements Listener {
         if (!EventManager.isPlayerFreezeAction(player)) {
             return;
         }
-        FreezeHandler freezeHandler = StaffControl.getInterface().getFreezeHandler();
+        FreezeHandler freezeHandler = StaffControl.getInstance().getFreezeHandler();
         if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.PLUGIN)) {
             if (event.getTo().distance(freezeHandler.getStructure(freezeHandler.getFreeze(player.getUniqueId()).getStaffUUID()).getLocation()) < 10) {
                 return;
             }
         }
         if (EventManager.isPlayer(player)) {
-            StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't teleport while you are frozen!");
+            StaffControl.getInstance().getFacilitisAPI().msg.sendMessage(player, "&cYou can't teleport while you are frozen!");
             event.setCancelled(true);
             return;
         }
         if (EventManager.isStaff(player)) {
-            StaffControl.getInterface().getFacilitisAPI().msg.sendMessage(player, "&cYou can't teleport while you are freezing!");
+            StaffControl.getInstance().getFacilitisAPI().msg.sendMessage(player, "&cYou can't teleport while you are freezing!");
             event.setCancelled(true);
-            return;
         }
     }
 }

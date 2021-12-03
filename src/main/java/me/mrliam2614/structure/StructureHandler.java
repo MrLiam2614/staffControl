@@ -1,6 +1,7 @@
 package me.mrliam2614.structure;
 
 import me.mrliam2614.StaffControl;
+import me.mrliam2614.storage.ConfigStorage;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,10 +13,12 @@ import java.util.UUID;
 public class StructureHandler {
     private final List<Structure> structureList;
     private final StaffControl plugin;
+    private final ConfigStorage configStorage;
 
     public StructureHandler() {
         structureList = new ArrayList<>();
-        this.plugin = StaffControl.getInterface();
+        this.plugin = StaffControl.getInstance();
+        this.configStorage = plugin.getConfigStorage();
     }
 
     public boolean addStructure(Structure structure) {
@@ -27,13 +30,12 @@ public class StructureHandler {
         return false;
     }
 
-    public boolean removeStructure(Structure structure) {
+    public void removeStructure(Structure structure) {
         if ((getStructure(structure.getCreator()) == null)) {
-            return false;
+            return;
         }
         destroyStructure(structure);
         structureList.remove(structure);
-        return true;
     }
 
     public Structure getStructure(UUID creator) {
@@ -50,15 +52,8 @@ public class StructureHandler {
         Location loc = structure.getLocation();
         World world = structure.getLocation().getWorld();
 
-        //PlaceBlocks
-        Material central = getMaterial(plugin.getConfig().getString("structure.central"));
-        Material central2 = getMaterial(plugin.getConfig().getString("structure.central2"));
-        Material player = getMaterial(plugin.getConfig().getString("structure.player"));
-        Material staff = getMaterial(plugin.getConfig().getString("structure.staff"));
-        Material borders = getMaterial(plugin.getConfig().getString("structure.borders"));
-        Material cage = getMaterial(plugin.getConfig().getString("structure.cage"));
-
-        loopStructureBlocks(world, loc, central, central2, player, staff, borders, cage, cage);
+        loopStructureBlocks(world, loc, configStorage.getCentral(), configStorage.getCentral2(), configStorage.getPlayer(),
+                configStorage.getStaff(), configStorage.getBorders(), configStorage.getCage(), configStorage.getCage());
     }
 
     private void destroyStructure(Structure structure) {
@@ -66,26 +61,21 @@ public class StructureHandler {
         Location loc = structure.getLocation();
 
         //PlaceBlocks
-        Material air = Material.AIR;
-        loopStructureBlock(world, loc, air);
-    }
-
-    private Material getMaterial(String mat) {
-        return Material.valueOf(mat);
+        loopStructureBlock(world, loc, configStorage.getAir());
     }
 
     private void loopStructureBlock(World world, Location loc, Material mat) {
         loopStructureBlocks(world, loc, mat, mat, mat, mat, mat, mat, mat);
     }
 
-    private void loopStructureBlocks(World world, Location loc, Material mat1, Material mat2, Material mat3, Material mat4, Material mat5, Material mat6, Material mat7) {
-        squareBlocks(world, loc.clone(), mat2);
-        world.getBlockAt(loc.clone()).setType(mat1);
-        squareBlocks(world, loc.clone().add(0.0,0.0,-3.0), mat3);
-        squareBlocks(world, loc.clone().add(0.0,0.0,3.0), mat4);
-        borderBlocks(world, loc.clone().add(-2.0,0.0,5.0), mat5);
-        borderBlocks(world, loc.clone().add(-2.0,1.0,5.0), mat6);
-        borderBlocks(world, loc.clone().add(-2.0,2.0,5.0), mat7);
+    private void loopStructureBlocks(World world, Location loc, Material central, Material central2, Material player, Material staff, Material border, Material cage1, Material cage2) {
+        squareBlocks(world, loc.clone(), central2);
+        world.getBlockAt(loc.clone()).setType(central);
+        squareBlocks(world, loc.clone().add(0.0,0.0,-3.0), player);
+        squareBlocks(world, loc.clone().add(0.0,0.0,3.0), staff);
+        borderBlocks(world, loc.clone().add(-2.0,0.0,5.0), border);
+        borderBlocks(world, loc.clone().add(-2.0,1.0,5.0), cage1);
+        borderBlocks(world, loc.clone().add(-2.0,2.0,5.0), cage2);
     }
 
     private void squareBlocks(World world, Location loc, Material mat) {

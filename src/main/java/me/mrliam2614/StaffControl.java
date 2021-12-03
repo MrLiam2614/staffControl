@@ -1,10 +1,10 @@
 package me.mrliam2614;
 
-import me.mrliam2614.commands.CmdFreeze;
-import me.mrliam2614.commands.CmdUnfreeze;
+import me.mrliam2614.commands.CommandFreeze;
+import me.mrliam2614.commands.CommandUnfreeze;
 import me.mrliam2614.events.*;
 import me.mrliam2614.freeze.FreezeHandler;
-import me.mrliam2614.structure.StructureHandler;
+import me.mrliam2614.storage.ConfigStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.PluginManager;
@@ -15,6 +15,7 @@ public class StaffControl extends JavaPlugin {
     private static StaffControl staffControl;
     private FacilitisAPI facilitisAPI;
     private FreezeHandler freezeHandler;
+    private ConfigStorage configStorage;
 
     @Override
     public void onEnable() {
@@ -32,22 +33,22 @@ public class StaffControl extends JavaPlugin {
     }
 
     private void checkMaterials() {
-        if(!(Material.valueOf(getConfig().getString("structure.central").toUpperCase()).isBlock() &&
+        if (!(Material.valueOf(getConfig().getString("structure.central").toUpperCase()).isBlock() &&
                 Material.valueOf(getConfig().getString("structure.central2").toUpperCase()).isBlock() &&
                 Material.valueOf(getConfig().getString("structure.player").toUpperCase()).isBlock() &&
                 Material.valueOf(getConfig().getString("structure.staff").toUpperCase()).isBlock() &&
                 Material.valueOf(getConfig().getString("structure.borders").toUpperCase()).isBlock() &&
                 Material.valueOf(getConfig().getString("structure.cage").toUpperCase()).isBlock())
-        ){
+        ) {
             facilitisAPI.console.sendMessage(this, "CHECK THE MATERIAL OF THE BLOCKS", "critical");
             Bukkit.getPluginManager().disablePlugin(this);
         }
-
+        configStorage = new ConfigStorage();
     }
 
     private void registerCommands() {
-        getCommand("freeze").setExecutor(new CmdFreeze());
-        getCommand("unfreeze").setExecutor(new CmdUnfreeze());
+        getCommand("freeze").setExecutor(new CommandFreeze());
+        getCommand("unfreeze").setExecutor(new CommandUnfreeze());
     }
 
     private void registerListener() {
@@ -74,7 +75,11 @@ public class StaffControl extends JavaPlugin {
         return freezeHandler;
     }
 
-    public static StaffControl getInterface() {
+    public static StaffControl getInstance() {
         return staffControl;
+    }
+
+    public ConfigStorage getConfigStorage() {
+        return configStorage;
     }
 }
